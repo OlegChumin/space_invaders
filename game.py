@@ -33,11 +33,12 @@ enemy_x_change = []
 enemy_y_change = []
 num_of_enemies = 12
 
+# Размещение врагов в ряды и с уникальными скоростями
 for i in range(num_of_enemies):
     enemy_img.append(pygame.image.load('enemy.png'))
-    enemy_x.append(random.randint(0, 775))
-    enemy_y.append(random.randint(50, 400))
-    enemy_x_change.append(20)
+    enemy_x.append(random.randint(0, 775))  # Случайное положение по X
+    enemy_y.append(random.randint(50, 200))  # Более равномерное распределение по Y
+    enemy_x_change.append(0.3 + random.random() * 0.2)  # Немного разные скорости для каждого
     enemy_y_change.append(30)
 
 
@@ -85,12 +86,15 @@ while running:
     for i in range(num_of_enemies):
 
         enemy_x[i] += enemy_x_change[i]
-        if enemy_x[i] <= 15:
-            enemy_x_change[i] = 0.25
-            enemy_y_change[i] += enemy_y_change[i]
+
+        # Если враг достиг края экрана, меняем направление и опускаем вниз
+        if enemy_x[i] <= 0:
+            enemy_x_change[i] = abs(enemy_x_change[i])  # Двигается вправо
+            enemy_y[i] += enemy_y_change[i]  # Спускается на одну линию вниз
         elif enemy_x[i] >= 775:
-            enemy_x_change[i] = -0.25
-            enemy_y_change[i] += enemy_y_change[i]
+            enemy_x_change[i] = -abs(enemy_x_change[i])  # Двигается влево
+            enemy_y[i] += enemy_y_change[i]  # Спускается на одну линию вниз
+
         # Отображение врагов на экране
         enemy(enemy_x[i], enemy_y[i], i)
 
