@@ -1,8 +1,6 @@
 import pygame
 import random
 
-from pygame import event
-
 # Инициализация Pygame
 pygame.init()
 
@@ -10,14 +8,12 @@ pygame.init()
 screen = pygame.display.set_mode((1000, 800))
 
 # Название и иконка
-# TODO добавить иконку (Глеб сделает иконку)
 pygame.display.set_caption("Space Invaders")
 icon = pygame.image.load('space_invaders_icon.png')
 pygame.display.set_icon(icon)
 
 # Фон
-background_color = (0, 0, 0);
-# TODO background = pygame.image.load('background.png')
+background_color = (0, 0, 0)
 
 # Игрок
 player_image = pygame.image.load('player.png')
@@ -33,24 +29,30 @@ enemy_x_change = []
 enemy_y_change = []
 num_of_enemies = 12
 
-# Размещение врагов в ряды и с уникальными скоростями
-for i in range(num_of_enemies):
-    enemy_img.append(pygame.image.load('enemy.png'))
-    enemy_x.append(random.randint(0, 775))  # Случайное положение по X
-    enemy_y.append(random.randint(50, 200))  # Более равномерное распределение по Y
-    enemy_x_change.append(0.3 + random.random() * 0.2)  # Немного разные скорости для каждого
-    enemy_y_change.append(30)
+# Размещение врагов в рядах и с уникальными скоростями
+rows = 3  # Количество рядов
+cols = 4  # Количество колонок
+enemy_width = 64  # Ширина спрайта противника
+enemy_height = 64  # Высота спрайта противника
+padding_x = 50  # Отступ между противниками по X
+padding_y = 50  # Отступ между противниками по Y
 
+# Создаем врагов в виде сетки (рядами)
+for row in range(rows):
+    for col in range(cols):
+        enemy_img.append(pygame.image.load('enemy.png'))
+        enemy_x.append(50 + col * (enemy_width + padding_x))  # Распределяем врагов по X
+        enemy_y.append(50 + row * (enemy_height + padding_y))  # Распределяем врагов по Y
+        enemy_x_change.append(0.15)  # Одинаковая скорость по X для всех врагов
+        enemy_y_change.append(30)  # Когда враг достиг края, он двигается вниз на 30 пикселей
 
 def player(x, y):
     screen.blit(player_image, (x, y))
 
-
 def enemy(x, y, i):
     screen.blit(enemy_img[i], (x, y))
 
-
-# Игрок
+# Основной цикл игры
 running = True
 while running:
 
@@ -64,36 +66,37 @@ while running:
         # События нажатие клавиш влево вправо <- a ... d ->
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                player_x_change = -1
+                player_x_change = -5
             if event.key == pygame.K_RIGHT:
-                player_x_change = 1
+                player_x_change = 5
 
         # Отпускание клавиш
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or pygame.K_RIGHT:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 player_x_change = 0
 
     # Изменение координат игрока
     player_x += player_x_change
 
-    # TODO границы экрана для игрока надо выровнять
+    # Границы экрана для игрока
     if player_x <= 15:
         player_x = 15
     elif player_x >= 775:
         player_x = 775
 
-    # Движение противника
-    for i in range(num_of_enemies):
-
+    # Движение противников
+    for i in range(len(enemy_x)):
         enemy_x[i] += enemy_x_change[i]
 
-        # Если враг достиг края экрана, меняем направление и опускаем вниз
+        # Если враг достиг края экрана, меняем направление движения и опускаем вниз
         if enemy_x[i] <= 0:
             enemy_x_change[i] = abs(enemy_x_change[i])  # Двигается вправо
-            enemy_y[i] += enemy_y_change[i]  # Спускается на одну линию вниз
-        elif enemy_x[i] >= 775:
+            for j in range(len(enemy_y)):
+                enemy_y[j] += enemy_y_change[i]  # Все враги спускаются вниз
+        elif enemy_x[i] >= 936:  # Учитываем ширину экрана и спрайта
             enemy_x_change[i] = -abs(enemy_x_change[i])  # Двигается влево
-            enemy_y[i] += enemy_y_change[i]  # Спускается на одну линию вниз
+            for j in range(len(enemy_y)):
+                enemy_y[j] += enemy_y_change[i]  # Все враги спускаются вниз
 
         # Отображение врагов на экране
         enemy(enemy_x[i], enemy_y[i], i)
@@ -101,5 +104,5 @@ while running:
     # Отображение игрока на экране
     player(player_x, player_y)
 
-    # Обновлением экрана
+    # Обновление экрана
     pygame.display.update()
