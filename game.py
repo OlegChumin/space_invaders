@@ -40,7 +40,7 @@ padding_y = 50  # Отступ между противниками по Y
 # Создаем врагов в виде сетки (рядами)
 for row in range(rows):
     for col in range(cols):
-        enemy_img.append(pygame.image.load('enemy.png'))
+        enemy_img.append(pygame.image.load('enemy.png').convert_alpha())
         enemy_x.append(50 + col * (enemy_width + padding_x))  # Распределяем врагов по X
         enemy_y.append(50 + row * (enemy_height + padding_y))  # Распределяем врагов по Y
         enemy_x_change.append(0.15)  # Одинаковая скорость по X для всех врагов
