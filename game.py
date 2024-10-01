@@ -92,11 +92,11 @@ while running:
         if enemy_x[i] <= 0:
             enemy_x_change[i] = abs(enemy_x_change[i])  # Двигается вправо
             for j in range(len(enemy_y)):
-                enemy_y[j] += enemy_y_change[i]  # Все враги спускаются вниз
+                enemy_y[j] += enemy_y_change[i]  # Все враги спускаются
         elif enemy_x[i] >= 936:  # Учитываем ширину экрана и спрайта
             enemy_x_change[i] = -abs(enemy_x_change[i])  # Двигается влево
             for j in range(len(enemy_y)):
-                enemy_y[j] += enemy_y_change[i]  # Все враги спускаются вниз
+                enemy_y[j] += enemy_y_change[i]  # Все враги спускаются
 
         # Отображение врагов на экране
         enemy(enemy_x[i], enemy_y[i], i)
