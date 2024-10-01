@@ -16,9 +16,9 @@ pygame.display.set_icon(icon)
 background_color = (0, 0, 0)
 
 # Игрок
-player_image = pygame.image.load('player.png')
-player_x = 370
-player_y = 550
+player_image = pygame.image.load('top_down_spaceship_final.png').convert_alpha()
+player_x = 500
+player_y = 680
 player_x_change = 0
 
 # Противник
@@ -43,8 +43,8 @@ for row in range(rows):
         enemy_img.append(pygame.image.load('enemy.png').convert_alpha())
         enemy_x.append(50 + col * (enemy_width + padding_x))  # Распределяем врагов по X
         enemy_y.append(50 + row * (enemy_height + padding_y))  # Распределяем врагов по Y
-        enemy_x_change.append(0.15)  # Одинаковая скорость по X для всех врагов
-        enemy_y_change.append(30)  # Когда враг достиг края, он двигается вниз на 30 пикселей
+        enemy_x_change.append(0.05)  # Одинаковая скорость по X для всех врагов
+        enemy_y_change.append(5)  # Когда враг достиг края, он двигается вниз на 30 пикселей
 
 def player(x, y):
     screen.blit(player_image, (x, y))
@@ -66,9 +66,9 @@ while running:
         # События нажатие клавиш влево вправо <- a ... d ->
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                player_x_change = -5
+                player_x_change = -0.5
             if event.key == pygame.K_RIGHT:
-                player_x_change = 5
+                player_x_change = 0.5
 
         # Отпускание клавиш
         if event.type == pygame.KEYUP:
@@ -81,8 +81,8 @@ while running:
     # Границы экрана для игрока
     if player_x <= 15:
         player_x = 15
-    elif player_x >= 775:
-        player_x = 775
+    elif player_x >= 875:
+        player_x = 875
 
     # Движение противников
     for i in range(len(enemy_x)):
