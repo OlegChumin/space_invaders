@@ -16,7 +16,7 @@ pygame.display.set_icon(icon)
 background_color = (0, 0, 0)
 
 # Игрок
-player_image = pygame.image.load('top_down_spaceship_final.png').convert_alpha()
+player_image = pygame.image.load('player.png').convert_alpha()
 player_x = 500
 player_y = 680
 player_x_change = 0
@@ -28,6 +28,13 @@ enemy_y = []
 enemy_x_change = []
 enemy_y_change = []
 num_of_enemies = 12
+
+# Снаряд
+bullet_img = pygame.image.load('bullet.png').convert_alpha()
+bullet_x = 0
+bullet_y = player_y
+bullet_y_change = 5  # Скорость движения снаряда
+bullet_state = "ready"  # снаряд не виден "fire" - снаряд в движении
 
 # Размещение врагов в рядах и с уникальными скоростями
 rows = 3  # Количество рядов
@@ -46,11 +53,23 @@ for row in range(rows):
         enemy_x_change.append(0.05)  # Одинаковая скорость по X для всех врагов
         enemy_y_change.append(5)  # Когда враг достиг края, он двигается вниз на 30 пикселей
 
+
 def player(x, y):
     screen.blit(player_image, (x, y))
 
+
 def enemy(x, y, i):
     screen.blit(enemy_img[i], (x, y))
+
+
+def fire_bullet(x, y):
+    global bullet_state
+    bullet_state = "fire"
+    screen.blit(bullet_img, (x + 16, y + 10))
+
+
+# TODO закончить функцию столкновений
+# def is_collision(bullet_x, bullet_y):
 
 # Основной цикл игры
 running = True
@@ -69,6 +88,10 @@ while running:
                 player_x_change = -0.5
             if event.key == pygame.K_RIGHT:
                 player_x_change = 0.5
+            if event.key == pygame.K_SPACE and bullet_state == "ready":
+                bullet_x = player_x  # снаряд/пуля вылетает с позиции игрока
+                bullet_y = player_y
+                fire_bullet(bullet_x, bullet_y)
 
         # Отпускание клавиш
         if event.type == pygame.KEYUP:
@@ -83,6 +106,15 @@ while running:
         player_x = 15
     elif player_x >= 875:
         player_x = 875
+
+    # Движение снаряда
+    if bullet_state == "fire":
+        fire_bullet(bullet_x, bullet_y)
+        bullet_y -= bullet_y_change
+
+    if bullet_y <= 0:
+        bullet_y = player_y
+        bullet_state = "ready"
 
     # Движение противников
     for i in range(len(enemy_x)):
