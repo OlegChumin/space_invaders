@@ -1,3 +1,4 @@
+import math
 import pygame
 import random
 
@@ -14,6 +15,13 @@ pygame.display.set_icon(icon)
 
 # Фон
 background_color = (0, 0, 0)
+
+# Счет игры
+score_value = 0
+font = pygame.font.Font('freesansbold.ttf', 32)
+text_x = 10
+text_y = 10
+
 
 # Игрок
 player_image = pygame.image.load('player.png').convert_alpha()
@@ -53,6 +61,9 @@ for row in range(rows):
         enemy_x_change.append(0.05)  # Одинаковая скорость по X для всех врагов
         enemy_y_change.append(5)  # Когда враг достиг края, он двигается вниз на 30 пикселей
 
+def show_score(x, y):
+    score = font.render("Score: " + str(score_value), True, (255, 255, 255))
+    screen.blit(score, (x, y))
 
 def player(x, y):
     screen.blit(player_image, (x, y))
@@ -69,7 +80,13 @@ def fire_bullet(x, y):
 
 
 # TODO закончить функцию столкновений
-# def is_collision(bullet_x, bullet_y):
+def is_collision(enemy_x, enemy_y, bullet_x, bullet_y):
+    distance = math.sqrt(math.pow(enemy_x - bullet_x, 2) + math.pow(enemy_y - bullet_y, 2))
+    if distance < 27:
+        return True
+    else:
+        return False
+
 
 # Основной цикл игры
 running = True
@@ -77,6 +94,8 @@ while running:
 
     # Заливка экрана
     screen.fill(background_color)
+
+    show_score(text_x, text_y)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -117,7 +136,8 @@ while running:
         bullet_state = "ready"
 
     # Движение противников
-    for i in range(len(enemy_x)):
+    # for i in range(len(enemy_x)):
+    for i in range(len(enemy_x) -1, -1, -1):
         enemy_x[i] += enemy_x_change[i]
 
         # Если враг достиг края экрана, меняем направление движения и опускаем вниз
@@ -130,8 +150,23 @@ while running:
             for j in range(len(enemy_y)):
                 enemy_y[j] += enemy_y_change[i]  # Все враги спускаются
 
+        # проверка столкновения
+        collision = is_collision(enemy_x[i], enemy_y[i], bullet_x, bullet_y)
+        if collision:
+            bullet_y = player_y # сбрасываем снаряд
+            bullet_state = "ready"
+            # enemy_x[i] = random.randint(0, 936)
+            # enemy_y[i] = random.randint(50, 150)
+            score_value += 1
+            del enemy_x[i]
+            del enemy_y[i]
+            del enemy_x_change[i]
+            del enemy_y_change[i]
+            del enemy_img[i]
+
         # Отображение врагов на экране
-        enemy(enemy_x[i], enemy_y[i], i)
+        if i < len(enemy_x):
+            enemy(enemy_x[i], enemy_y[i], i)
 
     # Отображение игрока на экране
     player(player_x, player_y)
