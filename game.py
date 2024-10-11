@@ -1,9 +1,11 @@
 import math
 import pygame
-import random
 
 # Инициализация Pygame
 pygame.init()
+
+# Инициализация звука
+pygame.mixer.init()
 
 # Настройка экрана
 screen = pygame.display.set_mode((1000, 800))
@@ -12,6 +14,10 @@ screen = pygame.display.set_mode((1000, 800))
 pygame.display.set_caption("Space Invaders")
 icon = pygame.image.load('space_invaders_new_icon.png')
 pygame.display.set_icon(icon)
+
+# Загрузка фоновой музыки
+pygame.mixer.music.load('Pascal Device - Azure (Jane T Extended Remix).mp3')
+pygame.mixer.music.play(-1) # Бесконечное воспроизведение музыки
 
 # Фон
 background_color = (0, 0, 0)
