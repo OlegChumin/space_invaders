@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="15604e5f-abb6-49e7-98f6-e7bf16ad5744" name="Changes" comment="Add score and collision">
-      <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game.py" afterDir="false" />
-    </list>
+    <list default="true" id="15604e5f-abb6-49e7-98f6-e7bf16ad5744" name="Changes" comment="Add music" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -181,7 +179,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728661789412</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Add music">
+      <option name="closed" value="true" />
+      <created>1728662282377</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1728662282377</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -205,6 +211,7 @@
     <MESSAGE value="Correct movement and boundaries" />
     <MESSAGE value="Add bullet" />
     <MESSAGE value="Add score and collision" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add score and collision" />
+    <MESSAGE value="Add music" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add music" />
   </component>
 </project>
